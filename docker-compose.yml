@@ -1,0 +1,47 @@
+# SousChef — one command brings up the whole stack:
+#   docker compose up --build
+# Services:
+#   db     : PostgreSQL 16 + pgvector (relational data AND vector store)
+#   server : Flask API + AI pipeline, also serves the HTML/JS client on :5000
+
+services:
+  db:
+    build: ./db
+    container_name: souschef-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-souschef}
+      POSTGRES_USER: ${POSTGRES_USER:-souschef}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-souschef} -d ${POSTGRES_DB:-souschef}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  server:
+    build: ./server
+    container_name: souschef-server
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Inside the compose network the DB host is the service name, not localhost
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    ports:
+      - "${SERVER_PORT:-5000}:5000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./client:/app/client:ro
+      - model_cache:/root/.cache
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  model_cache:

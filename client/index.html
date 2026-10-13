@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SousChef</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>SousChef</h1>
+      <p>Recipes, nutrition and conversions — ask in English or Hebrew.</p>
+    </div>
+    <div class="topbar-actions">
+      <span id="status" class="status" role="status" title="Server and database status">
+        <span class="dot"></span><span id="status-text">Checking…</span>
+      </span>
+      <button id="new-chat" class="ghost" type="button">New chat</button>
+    </div>
+  </header>
+
+  <main id="messages" class="messages" aria-live="polite">
+    <section id="empty" class="empty">
+      <h2>What are we cooking?</h2>
+      <p>Each answer is tagged with the path the assistant took: the recipe book, a kitchen tool, or general knowledge.</p>
+      <div class="suggestions">
+        <button type="button" class="suggestion tag-rag" data-q="How do I make shakshuka?">How do I make shakshuka?</button>
+        <button type="button" class="suggestion tag-tool" data-q="How many calories per serving are in the hummus?">How many calories per serving are in the hummus?</button>
+        <button type="button" class="suggestion tag-tool" data-q="Convert 2 cups of flour to grams">Convert 2 cups of flour to grams</button>
+        <button type="button" class="suggestion tag-rag" data-q="איך שומרים מרק עדשים במקפיא?" dir="rtl">איך שומרים מרק עדשים במקפיא?</button>
+        <button type="button" class="suggestion tag-direct" data-q="What is umami?">What is umami?</button>
+      </div>
+    </section>
+  </main>
+
+  <form id="composer" class="composer" autocomplete="off">
+    <label for="input" class="visually-hidden">Your question</label>
+    <textarea id="input" rows="1" dir="auto" maxlength="2000"
+              placeholder="Ask SousChef…" required></textarea>
+    <button id="send" type="submit">Send</button>
+  </form>
+
+  <template id="tpl-thinking">
+    <div class="msg assistant thinking">
+      <div class="bubble"><span class="pulse"></span>Thinking…</div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="Rubik, Segoe UI, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1E2721"/>
+    </marker>
+    <style>
+      .tier { fill: #FFFFFF; stroke: #1E2721; stroke-width: 1.5; }
+      .box  { fill: #FAFAF6; stroke: #5B665E; stroke-width: 1.2; }
+      .rag  { fill: #E6EFE7; stroke: #3F6B45; stroke-width: 1.5; }
+      .tool { fill: #FBF1DB; stroke: #D99A1E; stroke-width: 1.5; }
+      .dir  { fill: #E5EBF1; stroke: #46617D; stroke-width: 1.5; }
+      .h    { font-weight: 700; font-size: 16px; fill: #1E2721; }
+      .t    { fill: #1E2721; }
+      .s    { fill: #5B665E; font-size: 12px; }
+      .ln   { stroke: #1E2721; stroke-width: 1.4; fill: none; marker-end: url(#arr); }
+      .dash { stroke-dasharray: 5 4; }
+    </style>
+  </defs>
+  <rect width="1000" height="720" fill="#FAFAF6"/>
+  <text x="500" y="34" text-anchor="middle" class="h" font-size="20">SousChef — architecture</text>
+
+  <!-- CLIENT -->
+  <rect x="40" y="60" width="920" height="70" rx="10" class="tier"/>
+  <text x="60" y="88" class="h">CLIENT · HTML / CSS / vanilla JS (client/)</text>
+  <text x="60" y="112" class="s">Chat UI · fetch() JSON over REST · route tag (RAG / Tool / Direct LLM) · sources &amp; tool-call details · loading + error states</text>
+
+  <path class="ln" d="M380,130 V168"/><text x="390" y="155" class="s">POST /chat · GET /history · GET /health</text>
+  <path class="ln" d="M620,168 V130"/><text x="630" y="155" class="s">JSON response</text>
+
+  <!-- SERVER -->
+  <rect x="40" y="170" width="920" height="400" rx="10" class="tier"/>
+  <text x="60" y="198" class="h">SERVER · Flask (server/app.py → pipeline.py)</text>
+
+  <rect x="70" y="220" width="130" height="56" rx="8" class="box"/>
+  <text x="135" y="244" text-anchor="middle" class="t">User query</text>
+  <text x="135" y="262" text-anchor="middle" class="s">validated</text>
+  <path class="ln" d="M200,248 H238"/>
+
+  <rect x="240" y="212" width="230" height="74" rx="8" class="box"/>
+  <text x="355" y="236" text-anchor="middle" class="t" font-weight="700">Agent Router (router.py)</text>
+  <text x="355" y="255" text-anchor="middle" class="s">Claude Haiku classifier (forced tool)</text>
+  <text x="355" y="272" text-anchor="middle" class="s">fallback: Hebrew/English rules</text>
+
+  <path class="ln" d="M300,286 L170,330"/>
+  <path class="ln" d="M355,286 V330"/>
+  <path class="ln" d="M410,286 L560,330"/>
+
+  <rect x="70" y="332" width="200" height="96" rx="8" class="rag"/>
+  <text x="170" y="356" text-anchor="middle" class="t" font-weight="700">RAG (rag.py)</text>
+  <text x="170" y="376" text-anchor="middle" class="s">embed query (multilingual</text>
+  <text x="170" y="392" text-anchor="middle" class="s">MiniLM) → pgvector top-k</text>
+  <text x="170" y="408" text-anchor="middle" class="s">+ cosine similarity scores</text>
+
+  <rect x="285" y="332" width="210" height="96" rx="8" class="tool"/>
+  <text x="390" y="356" text-anchor="middle" class="t" font-weight="700">Tools (tools.py)</text>
+  <text x="390" y="376" text-anchor="middle" class="s">Claude tool-use loop picks:</text>
+  <text x="390" y="392" text-anchor="middle" class="s">lookup · nutrition · convert</text>
+  <text x="390" y="408" text-anchor="middle" class="s">· scale  (logged to DB)</text>
+
+  <rect x="510" y="332" width="150" height="96" rx="8" class="dir"/>
+  <text x="585" y="366" text-anchor="middle" class="t" font-weight="700">Direct</text>
+  <text x="585" y="386" text-anchor="middle" class="s">no extra context</text>
+
+  <path class="ln" d="M170,428 L330,470"/>
+  <path class="ln" d="M390,428 V468"/>
+  <path class="ln" d="M585,428 L460,470"/>
+
+  <rect x="240" y="470" width="300" height="84" rx="8" class="box"/>
+  <text x="390" y="494" text-anchor="middle" class="t" font-weight="700">LLM module (llm.py) — LCEL chain</text>
+  <text x="390" y="513" text-anchor="middle" class="s">memory(from DB) | prompt | Claude Sonnet</text>
+  <text x="390" y="530" text-anchor="middle" class="s">.with_retry() .with_fallbacks([Haiku]) | parser</text>
+
+  <path class="ln" d="M540,512 H690"/>
+  <rect x="692" y="470" width="240" height="84" rx="8" class="box"/>
+  <text x="812" y="494" text-anchor="middle" class="t" font-weight="700">Response Formatter</text>
+  <text x="812" y="513" text-anchor="middle" class="s">{answer, route, route_label,</text>
+  <text x="812" y="530" text-anchor="middle" class="s">router, sources, tool_calls}</text>
+
+  <rect x="692" y="220" width="240" height="120" rx="8" fill="none" stroke="#5B665E" stroke-dasharray="4 3"/>
+  <text x="812" y="244" text-anchor="middle" class="t" font-weight="700">External: Anthropic API</text>
+  <text x="812" y="266" text-anchor="middle" class="s">router · tool-use loop · answer</text>
+  <text x="812" y="284" text-anchor="middle" class="s">key only in server .env</text>
+  <path class="ln dash" d="M470,240 H690"/>
+  <path class="ln dash" d="M660,350 L690,322"/>
+  <path class="ln dash" d="M540,490 L740,342"/>
+
+  <!-- DB -->
+  <path class="ln" d="M170,574 V608"/><text x="180" y="596" class="s">vector search</text>
+  <path class="ln" d="M500,574 V608"/><text x="510" y="596" class="s">history · tool logs · memory · evals</text>
+
+  <rect x="40" y="610" width="920" height="90" rx="10" class="tier"/>
+  <text x="60" y="638" class="h">DATABASE · PostgreSQL 16 + pgvector — Docker container (db/Dockerfile, docker-compose.yml)</text>
+  <text x="60" y="662" class="s">document_chunks (vector(384), HNSW cosine index) · conversations · tool_calls · evaluation_results</text>
+  <text x="60" y="682" class="s">schema: db/migrations/001_schema.sql, applied automatically on first start</text>
+</svg>
