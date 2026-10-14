@@ -191,7 +191,9 @@ def route_by_llm(query: str, recent_turns: list[dict] | None = None) -> RouteDec
     if recent_turns:
         lines = [f"{t['role']}: {t['content'][:300]}" for t in recent_turns[-4:]]
         convo = "Recent conversation:\n" + "\n".join(lines) + "\n\n"
-    resp = _get_client().messages.create(
+    from llm import create_message  # handles models that reject a forced tool_choice
+    resp = create_message(
+        _get_client(),
         model=config.ROUTER_MODEL,
         max_tokens=300,
         system=_ROUTER_SYSTEM.format(recipes=", ".join(recipes.recipe_titles())),
@@ -199,7 +201,7 @@ def route_by_llm(query: str, recent_turns: list[dict] | None = None) -> RouteDec
         tool_choice={"type": "tool", "name": "route_query"},
         messages=[{"role": "user", "content": f"{convo}Latest message: {query}"}],
     )
-    block = next((b for b in resp.content if b.type == "tool_use"), None)
+    block = next((b for b in resp.content if b.type == "tool_use" and b.name == "route_query"), None)
     if block is None:
         raise ValueError("Router model returned no tool_use block")
     data = block.input

@@ -177,13 +177,30 @@ def _get_client() -> anthropic.Anthropic:
     return _client
 
 
+def create_message(client: anthropic.Anthropic, **kwargs) -> Any:
+    """messages.create that degrades a forced tool_choice gracefully.
+
+    Some models (e.g. Claude Sonnet 5.5) reject tool_choice of type "any"/"tool".
+    In that case we retry once with "auto"; the system prompt still tells the
+    model to call a tool, so behaviour stays the same.
+    """
+    try:
+        return client.messages.create(**kwargs)
+    except anthropic.BadRequestError as e:
+        forced = kwargs.get("tool_choice", {}).get("type") in ("any", "tool")
+        if forced and "tool_choice" in str(e):
+            log.info("Model %s does not support forced tool_choice; retrying with auto", kwargs.get("model"))
+            return client.messages.create(**{**kwargs, "tool_choice": {"type": "auto"}})
+        raise
+
+
 def _create_with_fallback(**kwargs) -> Any:
     """SDK already retries 429/5xx/timeouts; on final failure try the fallback model."""
     try:
-        return _get_client().messages.create(model=config.LLM_MODEL, **kwargs)
+        return create_message(_get_client(), model=config.LLM_MODEL, **kwargs)
     except anthropic.APIError as e:
         log.warning("Primary model failed in tool loop (%s); trying fallback %s", e, config.LLM_FALLBACK_MODEL)
-        return _get_client().messages.create(model=config.LLM_FALLBACK_MODEL, **kwargs)
+        return create_message(_get_client(), model=config.LLM_FALLBACK_MODEL, **kwargs)
 
 
 def run_tool_agent(question: str, session_id: str, history: list | None = None,
