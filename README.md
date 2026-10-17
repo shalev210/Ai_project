@@ -147,7 +147,8 @@ souschef/
 ### 6. Demo queries
 ### Live Demo
 Watch the full end-to-end demonstration of the Agentic AI Pipeline (Direct LLM, RAG, and Tool usage) on YouTube:
-📺 **[SousChef Project Demonstration Video(In English)]([https://youtu.be/oc2RCUZvDDo](https://youtu.be/HxY_sQmRTkE))**
+📺 (In English) **[SousChef Project Demonstration Video](https://youtu.be/HxY_sQmRTkE)**
+📺 (In Hebrew) **[SousChef Project Demonstration Video](https://youtu.be/oc2RCUZvDDo)**
 | Path | Query |
 |---|---|
 | RAG | `How do I make shakshuka?` · `איך שומרים מרק עדשים במקפיא?` · `Can I bake schnitzel instead of frying it?` |
@@ -263,9 +264,10 @@ EMBEDDING_BACKEND=hash ROUTER_MODE=rules python -m pytest -q
 כל המפתחות והסיסמאות נטענים ממשתני סביבה בקובץ `.env`, שמופיע ב־`.gitignore` ולעולם לא נשמר ב־Git. בריפו נמצא רק `.env.example`. טבלת המשתנים המלאה מופיעה בחלק האנגלי.
 
 ### 5. שאילתות להדגמה
-### סרטון הדגמה
-מוזמנים לצפות בסרטון ההדגמה של המערכת, המציג את יכולות הנתב (Router) ואת שלושת המסלולים (תשובה ישירה, שליפת RAG, והפעלת כלים):
-📺 **[צפו בסרטון ההדגמה ב-YouTube](https://youtu.be/oc2RCUZvDDo)**
+### סרטונים והדגמה
+מוזמנים לצפות בסרטוני ההדגמה של המערכת, המציגים את יכולות הנתב (Router) ואת שלושת המסלולים (תשובה ישירה, שליפת RAG, והפעלת כלים):
+📺 (In English) **[צפו בסרטון ההדגמה באנגלית ב-YouTube](https://youtu.be/HxY_sQmRTkE)**
+📺 (בעברית) **[צפו בסרטון ההדגמה בעברית ב-YouTube](https://youtu.be/oc2RCUZvDDo)**
 
 - **RAG:** "איך מכינים שקשוקה?", "איך שומרים מרק עדשים במקפיא?"
 - **כלי:** "כמה קלוריות יש במנה של חומוס?", "Convert 2 cups of flour to grams", "Scale the challah for 24 people"
