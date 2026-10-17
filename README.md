@@ -147,7 +147,7 @@ souschef/
 ### 6. Demo queries
 ### Live Demo
 Watch the full end-to-end demonstration of the Agentic AI Pipeline (Direct LLM, RAG, and Tool usage) on YouTube:
-📺 **[SousChef Project Demonstration Video](https://youtu.be/oc2RCUZvDDo)**
+📺 **[SousChef Project Demonstration Video(In English)]([https://youtu.be/oc2RCUZvDDo](https://youtu.be/HxY_sQmRTkE))**
 | Path | Query |
 |---|---|
 | RAG | `How do I make shakshuka?` · `איך שומרים מרק עדשים במקפיא?` · `Can I bake schnitzel instead of frying it?` |
