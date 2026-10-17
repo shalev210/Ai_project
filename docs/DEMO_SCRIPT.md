@@ -1,7 +1,9 @@
 # Demo Script (≈ 5 minutes)
 
 Before recording: `docker compose up --build`, wait until `/health` shows the chunk count, open http://localhost:5000 and click **New chat**.
-
+### Live Demo
+Watch the full end-to-end demonstration of the Agentic AI Pipeline (Direct LLM, RAG, and Tool usage) on YouTube:
+📺 **[SousChef Project Demonstration Video](https://youtu.be/oc2RCUZvDDo)**
 | # | Show | Type this | What to point out |
 |---|---|---|---|
 | 1 | Setup | `docker compose ps`, then open http://localhost:5000/health | Both containers healthy, DB up, chunks indexed |
